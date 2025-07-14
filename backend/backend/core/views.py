@@ -5,8 +5,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model
 from .models import Item, Voucher
 from .serializers import ItemSerializer, VoucherSerializer, UserSerializer
+from django.db.models.manager import BaseManager
+from core.models import CustomUser
+from typing import cast
 
 CustomUser = get_user_model()
+
+# Cast the manager to the right type
+UserManager = cast(BaseManager, CustomUser.objects)
 
 class ItemList(APIView):
     def get(self, request):
@@ -35,9 +41,14 @@ class RegisterView(APIView):
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
-        user = CustomUser.objects.create_user(
-            username=username,
-            email=email,
-            password=password
+        
+         # Create user using manager
+        try:
+            user = CustomUser.objects.create_user(
+                username=username,
+                email=email,
+                password=password
         )
         return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+    
+    

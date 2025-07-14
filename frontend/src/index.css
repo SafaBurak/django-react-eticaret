@@ -1,0 +1,22 @@
+/* Tell VSCode to treat this as Tailwind-enabled CSS */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  @apply box-border;
+}
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-sans antialiased;
+}
+
+* {
+  @apply box-border;
+}
