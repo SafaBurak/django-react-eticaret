@@ -9,6 +9,7 @@ from django.db.models.manager import BaseManager
 from core.models import CustomUser
 from typing import cast
 
+
 CustomUser = get_user_model()
 
 # Cast the manager to the right type
@@ -41,9 +42,17 @@ class RegisterView(APIView):
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
-        user = CustomUser.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )    
-        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+
+        if not all([username, email, password]):
+            return Response({'error': 'Missing required fields'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = CustomUser.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    

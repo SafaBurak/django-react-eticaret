@@ -6,7 +6,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - postgres_/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
   web:
@@ -36,5 +36,4 @@ services:
     restart: unless-stopped
 
 volumes:
-
-  postgres_:
+  postgres_data:
