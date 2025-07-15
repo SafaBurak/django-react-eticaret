@@ -41,14 +41,9 @@ class RegisterView(APIView):
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
-        
-         # Create user using manager
-        try:
-            user = CustomUser.objects.create_user(
-                username=username,
-                email=email,
-                password=password
-        )
+        user = CustomUser.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )    
         return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
-    
-    

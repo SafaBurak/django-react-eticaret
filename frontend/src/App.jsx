@@ -20,25 +20,36 @@ export default function App() {
       .then(res => res.json())
       .then(data => setVouchers(data));
   }, []);
+// csrf token
+function getCSRFToken() {
+  const cookie = document.cookie
+    .split("; ")
+    .find(row => row.startsWith("csrftoken="));
+  return cookie ? cookie.split("=")[1] : null;
+}
+
 
   // Handle Login
   const handleLogin = async (e) => {
     e.preventDefault();
-    const username = e.target.username.value;
-    const password = e.target.password.value;
-
-    const res = await fetch('/api/login/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+    const { username, password } = e.target;
+  
+    const res = await fetch("http://localhost:8000/api/login/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": getCSRFToken()
+      },
+      body: JSON.stringify({ username, password }),
+      credentials: "include"
     });
-
+  
     if (res.ok) {
-      const user = await res.json();
-      setCurrentUser(user);
-      setPage('home');
+      const data = await res.json();
+      setCurrentUser(data);
+      setPage("home");
     } else {
-      alert('Login failed');
+      alert("Login failed. Try again.");
     }
   };
 

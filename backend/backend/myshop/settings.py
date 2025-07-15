@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'django-insecure-your-secret-key-here'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -63,6 +63,8 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = 'core.CustomUser'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
